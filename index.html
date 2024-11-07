@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Interaction GUI</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-hover-color: #0056b3;
+            --bg-light: #f0f0f0;
+            --bg-dark: #121212;
+            --text-light: #ffffff;
+            --text-dark: #000000;
+            --container-light: #ffffff;
+            --container-dark: #1e1e1e;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            background-color: var(--container-light);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: var(--primary-hover-color);
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+            let currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else if (currentTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+            } else if (prefersDarkScheme.matches) {
+                document.body.classList.add('dark-theme');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                if (document.body.classList.contains('dark-theme')) {
+                    document.body.classList.remove('dark-theme');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle">🌓</button>
+    <div class="container">
+        <div id="question" class="question">What is your name?</div>
+        <div class="input-container">
+            <input type="text" id="answer" placeholder="Type your answer here...">
+        </div>
+        <button onclick="submitAnswer()">Submit</button>
+        <div id="output" class="output"></div>
+    </div>
+    <script>
+        function submitAnswer() {
+            const questionElem = document.getElementById('question');
+            const answerInput = document.getElementById('answer');
+            const outputElem = document.getElementById('output');
+            
+            // Capture user's answer
+            const userAnswer = answerInput.value;
+            outputElem.innerHTML = `You answered: ${userAnswer}`;
+            
+            // Simulate saving to log (or interaction with MATLAB)
+            console.log(`Question: ${questionElem.innerHTML}, Answer: ${userAnswer}`);
+            
+            // Reset the input
+            answerInput.value = '';
+        }
+        
+        document.body.classList.toggle('dark-theme', localStorage.getItem('theme') === 'dark');
+    </script>
+    <style>
+        .dark-theme {
+            --bg-light: #121212;
+            --bg-dark: #f0f0f0;
+            --text-light: #ffffff;
+            --text-dark: #f0f0f0;
+            --container-light: #1e1e1e;
+            --container-dark: #ffffff;
+            --primary-color: #bb86fc;
+            --primary-hover-color: #3700b3;
+        }
+    </style>
+</body>
+</html>
